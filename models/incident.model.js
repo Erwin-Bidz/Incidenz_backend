@@ -27,6 +27,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     title: DataTypes.STRING,
     media: DataTypes.BLOB,
+    audio: DataTypes.BLOB,
     gravite: DataTypes.INTEGER,
     description: DataTypes.TEXT,
     localisation: DataTypes.STRING,

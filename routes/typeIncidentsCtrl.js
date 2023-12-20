@@ -12,6 +12,7 @@ module.exports = {
         //Params
         var nom        = req.body.nom;
         var description = req.body.description;
+        var image = req.body.image;
         var entreprise        = req.body.entreprise;
 
         //TODO verify pseudo length, mail regex, password...
@@ -26,6 +27,7 @@ module.exports = {
         //CREATE NEW INCIDENT
         models.TypeIncident.create({
           nom        : nom,
+          image      : image,
           description: description,
           entreprise : entreprise
         }).then(function(typeIncidents) {
@@ -52,7 +54,7 @@ module.exports = {
           limit: (!isNaN(limit)) ? limit : null,
           offset: (!isNaN(offset)) ? offset : null,
           //Recherche dans la BD...
-          attributes: ['nom', 'description'],
+          attributes: ['nom','image', 'description'],
           //where: { userType: 'Dev' }
         })
         .then(function(users) {
@@ -85,7 +87,7 @@ module.exports = {
       };
                           
       models.TypeIncident.findAll({
-        attributes: ['nom','description'],
+        attributes: ['nom','image', 'description'],
           where: whereCondition
       }).then(function(typeIncidents) {
           if (typeIncidents) {
@@ -109,7 +111,7 @@ module.exports = {
       //if (userId < 0 ) return res.status(400).json({ 'error': 'wrong token' });
 
       models.TypeIncident.findOne({
-          attributes: ['nom', 'description'],
+          attributes: ['nom', 'image','description'],
           where: { id: id }
       }).then(function(user) {
           if (user) {

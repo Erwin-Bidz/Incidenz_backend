@@ -15,6 +15,7 @@ module.exports ={
       var title       = req.body.title;
       var type        = req.body.type;
       var media       = req.body.media;
+      var audio       = req.body.audio;
       var gravite     = req.body.gravite;
       var description = req.body.description;
       var localisation= req.body.localisation;
@@ -48,6 +49,7 @@ module.exports ={
                     tel        : userId,
                     type       : 2,
                     media      : media,
+                    audio      : audio,
                     gravite    : gravite,
                     description: description,
                     localisation   : localisation,

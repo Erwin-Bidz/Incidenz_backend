@@ -18,6 +18,7 @@ module.exports = (sequelize, DataTypes) => {
       },
       onDelete: 'CASCADE'
     },
+    image: DataTypes.BLOB,
     description: DataTypes.STRING,
   }, {
     sequelize,

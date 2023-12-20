@@ -31,6 +31,9 @@ module.exports = {
       media: {
         type: Sequelize.BLOB
       },
+      audio: {
+        type: Sequelize.BLOB
+      },
       gravite: {
         type: Sequelize.INTEGER
       },

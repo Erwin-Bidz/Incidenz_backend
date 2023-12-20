@@ -21,6 +21,9 @@ module.exports = {
           key: 'id'
         }
       },
+      image: {
+        type: Sequelize.BLOB
+      },
       description: {
         type: Sequelize.STRING
       },
