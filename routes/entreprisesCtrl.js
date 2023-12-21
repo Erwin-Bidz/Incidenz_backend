@@ -1,6 +1,6 @@
 //Imports
 var bcrypt = require('bcrypt');
-var jwtUtils = require('../utils/jwt.utils');
+var jwtUtils = require('../utils/jwt.utils.entreprise');
 var models = require('../models');
 var asyncLib = require('async');
 
@@ -9,8 +9,9 @@ module.exports = {
     login: function(req, res) {
         
     // Params
-    var nom    = req.body.nom;
+    var nom      = req.body.nom;
     var password = req.body.password;
+    console.log(req.body)
 
     if (nom == null ||  password == null) {
       return res.status(400).json({ 'error': 'missing parameters' });
@@ -63,7 +64,7 @@ module.exports = {
         var contact = req.body.contact;
 
         //TODO verify pseudo length, mail regex, password...
-        if (nom == null || description == null) {
+        if (nom == null || password == null) {
             return res.status(400).json({ 'error': 'missing parameters' });
         }
 
@@ -71,20 +72,54 @@ module.exports = {
             return res.status(400).json({ 'error': 'wrong name: must be length 2 - 25' });
         }
 
-        //CREATE NEW INCIDENT
-        models.Entreprise.create({
-        nom        : nom,
-        password   : password,
-        contact    : contact
-        }).then(function(entreprises) {
-        if (entreprises) {
-              res.status(201).json(entreprises);
-        } else {
-              res.status(404).json({ "error": "no type of entreprises found" });
-        }
-        }).catch(function(err) {
-            return res.status(500).json({ 'error': 'unable to verify type of entreprise'});
-         });
+        
+        //WATERFALL CREATE NEW ENTREPRISE
+        asyncLib.waterfall([
+            function(done) {
+                models.Entreprise.findOne({
+                    attributes: ['nom', 'contact'],
+                    where: { nom: nom, contact: contact }
+                })
+                .then(function(entrepriseFound) {
+                    done(null, entrepriseFound);
+                })
+                .catch(function(err) {
+                    return res.status(500).json({ 'error': 'unable to verify entreprise'});
+                });
+            },
+            function(entrepriseFound, done) {
+                if (!entrepriseFound) {
+                    bcrypt.hash(password, 5, function( err, bcryptedPassword ) {
+                        done(null, entrepriseFound, bcryptedPassword);
+                    });
+                } else {
+                    return res.status(409).json({ 'error': 'entreprise already exist' });
+                }
+            },
+            function(entrepriseFound, bcryptedPassword, done) {
+                var newEntreprise = models.Entreprise.create({
+                    nom       : nom,
+                    password  : bcryptedPassword,
+                    contact   : contact,
+                })
+                .then(function(newEntreprise) {
+                    done(newEntreprise);
+                })
+                .catch(function(err) {
+                    return res.status(500).json({ 'error': 'cannot add entreprise' });
+                });
+            }   
+        ], function(newEntreprise) {
+            if (newEntreprise) {
+                return res.status(201).json({
+                    'entrepriseId': newEntreprise.id,
+                    'entreprisename': newEntreprise.nom,
+                    'entreprisecontact': newEntreprise.contact,
+                })
+            } else {
+                return res.status(500).json({ 'error': 'cannot add entreprise' });
+            }
+        });
     },
     listEntreprise: function (req, res) {
 
@@ -150,14 +185,13 @@ module.exports = {
         var headerAuth = req.headers['authorization'];
         //var userId     = jwtUtils.getUserId(headerAuth);
         //var token      = jwtUtils.parseAuthorization(headerAuth);
-        var id      = req.query.id;
-        console.log(userId);
+        var id      = req.param.id;
         //console.log(token);
       
         //if (userId < 0 ) return res.status(400).json({ 'error': 'wrong token' });
       
         models.Entreprise.findOne({
-            attributes: ['username', 'description'],
+            //attributes: ['username', 'description'],
             where: { id: id }
         }).then(function(user) {
             if (user) {

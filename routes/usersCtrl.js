@@ -54,7 +54,7 @@ module.exports = {
             function(done) {
                 models.User.findOne({
                     attributes: ['tel'],
-                    //where: { tel: tel }
+                    where: { tel: tel }
                 })
                 .then(function(userFound) {
                     done(null, userFound);

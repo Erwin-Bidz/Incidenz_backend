@@ -49,9 +49,10 @@ exports.router = (function() {
     
 
     /////////////entreprises routes///////////////
-    apiRouter.route('/entreprises/login/').post(usersCtrl.login);
-    apiRouter.route('/entreprises/new/').post(entreprisesCtrl.createEntreprise);
-    apiRouter.route('/entreprises/detail/').get(entreprisesCtrl.listEntreprise);
+    apiRouter.route('/entreprises/login/').post(entreprisesCtrl.login);
+    apiRouter.route('/entreprises/register/').post(entreprisesCtrl.createEntreprise);
+    apiRouter.route('/entreprises/list/').get(entreprisesCtrl.listEntreprise);
+    apiRouter.route('/entreprises/detail/').get(entreprisesCtrl.getEntreprise);
     apiRouter.route('/entreprises/search/').get(entreprisesCtrl.searchEntreprise);
 
     return apiRouter;

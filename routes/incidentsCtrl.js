@@ -19,7 +19,7 @@ module.exports ={
       var gravite     = req.body.gravite;
       var description = req.body.description;
       var localisation= req.body.localisation;
-      var etat        = req.body.etat;
+      //var etat        = req.body.etat;
 
       if (!title || !description) {
           return res.status(400).json({ 'error': 'missing parameters'});
@@ -47,7 +47,7 @@ module.exports ={
                 models.Incident.create({
                     title      : title,                   
                     tel        : userId,
-                    type       : 2,
+                    type       : type,
                     media      : media,
                     audio      : audio,
                     gravite    : gravite,
@@ -111,7 +111,12 @@ module.exports ={
         
         if (!UserId && EntrepriseId) {
           //L'utilisateur est une entreprise'
-          
+
+          //On récupère l'entreprise à partir du type de l'incident
+          typeIncident = models.TypeIncident.findOne({
+            attributes: ['entreprise'],
+            where: { type: type  } })
+
           models.Incident.findAll({
             order: [(order != null) ? order.split(':') : ['title', 'ASC']],
             attributes: (fields !== '*' && fields != null) ? fields.split(',') : null,

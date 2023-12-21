@@ -1,6 +1,6 @@
 //Imports
 var bcrypt = require('bcrypt');
-var jwtUtils = require('../utils/jwt.utils');
+var jwtUtilsAdmin = require('../utils/jwt.utils.admin');
 var models = require('../models');
 var asyncLib = require('async');
 
@@ -13,7 +13,6 @@ module.exports = {
     register: function(req, res) {
 
       var headerAuth = req.headers['authorization'];
-      var isAdmin     = jwtUtils.getIsAdmin(headerAuth);
 
         //Params
         var nom       = req.body.nom;
@@ -125,7 +124,7 @@ module.exports = {
           if (adminFound) {
             return res.status(201).json({
               'adminId': adminFound.id,
-              'token': jwtUtils.generateTokenForAdmin(adminFound),
+              'token': jwtUtilsAdmin.generateTokenForAdmin(adminFound),
               'adminName': adminFound.nom,
               //'imei': adminFound.imei
             });
@@ -137,7 +136,7 @@ module.exports = {
     getAdminProfile: function(req, res) {
         // Getting auth header
         var headerAuth = req.headers['authorization'];
-        var adminId     = jwtUtils.getAdminId(headerAuth);
+        var adminId     = jwtUtilsAdmin.getAdminId(headerAuth);
         //var email      = req.body.email;
         console.log(adminId);
         //console.log(token);
@@ -161,7 +160,7 @@ module.exports = {
     getAllAdmins: function(req, res) {
        // Getting auth header
        var headerAuth = req.headers['authorization'];
-       var AdminId     = jwtUtils.getAdminId(headerAuth);
+       var AdminId     = jwtUtilsAdmin.getAdminId(headerAuth);
        console.log(AdminId);
            
  
@@ -198,7 +197,7 @@ module.exports = {
     changePassword: function(req, res) {
       // Getting auth header
       var headerAuth  = req.headers['authorization'];
-      var adminId      = jwtUtils.getAdminId(headerAuth);
+      var adminId      = jwtUtilsAdmin.getAdminId(headerAuth);
   
       // Params
       var password = req.body.password;
