@@ -192,7 +192,7 @@ module.exports = {
        //if (!isAdmin) { return res.status(403).json({ 'error': 'Not authorized' }); }
  
          models.User.findAll({
-           order: [(order != null) ? order.split(':') : ['username', 'ASC']],
+           order: [(order != null) ? order.split(':') : ['nom', 'ASC']],
            attributes: (fields !== '*' && fields != null) ? fields.split(',') : null,
            limit: (!isNaN(limit)) ? limit : null,
            offset: (!isNaN(offset)) ? offset : null,
@@ -255,7 +255,7 @@ module.exports = {
     getUser: function(req, res) {
       // Getting auth header
       var headerAuth = req.headers['authorization'];
-      var userId     = jwtUtils.getUserId(headerAuth);
+      //var userId     = jwtUtils.getUserId(headerAuth);
       //var email      = req.body.email;
       var userId      = req.query.userId;
       console.log(userId);
@@ -284,7 +284,7 @@ module.exports = {
       //var userId     = jwtUtils.getUserId(headerAuth);
 
 
-      console.log(userId);
+      console.log(id);
 
       //if (userId < 0 ) return res.status(400).json({ 'error': 'wrong token' });
 
@@ -351,6 +351,7 @@ module.exports = {
         }
       });
     },
+    
 
 /*
 const express = require("express");

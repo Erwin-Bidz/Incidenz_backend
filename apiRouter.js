@@ -2,7 +2,7 @@
 var express = require('express');
 var usersCtrl = require('./routes/usersCtrl');
 var incidentsCtrl = require('./routes/incidentsCtrl');
-var typeIncidentsCtrl = require('./routes/typeIncidentsCtrl');
+var typeIncidentsCtrl = require('./routes/typeIncidentsCtrl')
 var entreprisesCtrl = require('./routes/entreprisesCtrl');
 var adminsCtrl = require('./routes/adminsCtrl');
 
@@ -16,6 +16,8 @@ exports.router = (function() {
     apiRouter.route('/admins/login/').post(adminsCtrl.login);
     apiRouter.route('/admins/login/me/').get(adminsCtrl.getAdminProfile);
     apiRouter.route('/admins/login/me/changePwd/').put(adminsCtrl.changePassword);
+    apiRouter.route('/admins/typeIncident/new/').post(adminsCtrl.createTypeIncident);
+    apiRouter.route('/admins/typeIncident/').get(adminsCtrl.listTypeIncident);
     
     
     ///////////////Users routes/////////////////////
@@ -25,7 +27,7 @@ exports.router = (function() {
     apiRouter.route('/users/login/me/changePwd/').put(usersCtrl.changePassword);
     apiRouter.route('/users/login/user/').get(usersCtrl.getUser);
     apiRouter.route('/users/login/blockUser/').put(usersCtrl.blockUser);
-    //apiRouter.route('/users/login/users/').get(usersCtrl.getAllUsers);
+    apiRouter.route('/users/login/users/').get(usersCtrl.getAllUsers);
     apiRouter.route('/users/login/users/delete/').delete(usersCtrl.deleteUser);
 
 
@@ -41,7 +43,7 @@ exports.router = (function() {
     
 
     /////////////typeIncidents routes/////////////
-    apiRouter.route('/typeIncidents/').post(typeIncidentsCtrl.listTypeIncident);
+    apiRouter.route('/typeIncidents/').get(typeIncidentsCtrl.listTypeIncident);
     apiRouter.route('/typeIncidents/new/').post(typeIncidentsCtrl.createTypeIncident);
     apiRouter.route('/typeIncidents/delete/').delete(typeIncidentsCtrl.deleteTypeIncident);
     apiRouter.route('/typeIncidents/detail/').get(typeIncidentsCtrl.listTypeIncident);

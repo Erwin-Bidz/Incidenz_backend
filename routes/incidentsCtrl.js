@@ -37,6 +37,7 @@ module.exports ={
                 })
                 .then(function(userFound) {
                     done(null, userFound);
+                    console.log("id du current user :"+ id)
                 })
             } else {
                 done(null, null);
@@ -57,6 +58,7 @@ module.exports ={
                 })
                 .then(function(newIncident) {
                     done(newIncident);
+                    console.table(newIncident)
                 });
             }
         },
@@ -69,6 +71,7 @@ module.exports ={
     });
     },
     listIncident: function(req, res) {
+      console.log(req)
       // Getting auth header
       var headerAuth = req.headers['authorization'];
       var AdminId    = jwtUtilsAdmin.getAdminId(headerAuth);
