@@ -197,7 +197,7 @@ module.exports = {
            limit: (!isNaN(limit)) ? limit : null,
            offset: (!isNaN(offset)) ? offset : null,
            //Recherche dans la BD...
-           attributes: ['nom', 'email', 'tel'],
+           attributes: ['id', 'nom', 'email', 'tel'],
            //where: { userType: 'Dev' }
          })
          .then(function(users) {
@@ -288,23 +288,37 @@ module.exports = {
 
       //if (userId < 0 ) return res.status(400).json({ 'error': 'wrong token' });
 
-      models.User.findOne({
-          //attributes: [ 'id', 'email', 'username', 'collectivite'],
-          where: { id: id }
-      }).then(function(userFound) {
-        if (userFound) {
-          models.User.delete(
-            { where: { id: id } }
-          ).then(function() {
-            models.User.findByPk(id).then(function(user) {
-              return res.status(204).json(user);
-            });
+      asyncLib.waterfall([
+        function(done) {
+          models.User.findOne({
+            where: { id: id }
+          }).then(function (userFound) {
+            done(null, userFound);
+          })
+          .catch(function(err) {
+            return res.status(500).json({ 'error': 'unable to verify user' });
           });
+        },
+        function(userFound, done) {
+          if(userFound) {
+            userFound.destroy().then(function() {
+              done(null, userFound);
+            }).catch(function(err) {
+              res.status(500).json({ 'error': 'cannot delete user' });
+            });
+          } else {
+            res.status(404).json({ 'error': 'user not found' });
+          }
+        },
+      ], function(err, userFound) {
+        if (!err && userFound) {
+          return res.status(200).json({ 'message': 'user deleted successfully' });
+        } else {
+          return res.status(500).json({ 'error': 'cannot delete user' });
         }
-      })
-      .catch(function(err) {
-        return res.status(500).json({ 'error': 'cannot delete User'});
       });
+      
+      
     },
     blockUser: function(req, res) {
         // Getting auth header

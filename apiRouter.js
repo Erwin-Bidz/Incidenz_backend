@@ -16,8 +16,8 @@ exports.router = (function() {
     apiRouter.route('/admins/login/').post(adminsCtrl.login);
     apiRouter.route('/admins/login/me/').get(adminsCtrl.getAdminProfile);
     apiRouter.route('/admins/login/me/changePwd/').put(adminsCtrl.changePassword);
-    apiRouter.route('/admins/typeIncident/new/').post(adminsCtrl.createTypeIncident);
-    apiRouter.route('/admins/typeIncident/').get(adminsCtrl.listTypeIncident);
+    //apiRouter.route('/admins/typeIncident/new/').post(adminsCtrl.createTypeIncident);
+    //apiRouter.route('/admins/typeIncident/').get(adminsCtrl.listTypeIncident);
     
     
     ///////////////Users routes/////////////////////
@@ -29,24 +29,26 @@ exports.router = (function() {
     apiRouter.route('/users/login/blockUser/').put(usersCtrl.blockUser);
     apiRouter.route('/users/login/users/').get(usersCtrl.getAllUsers);
     apiRouter.route('/users/login/users/delete/').delete(usersCtrl.deleteUser);
+    apiRouter.route('/typeIncidents/new/').post(typeIncidentsCtrl.createTypeIncident);
 
 
     /////////////Incidents routes/////////////////// 
-    apiRouter.route('/incidents/new/').post(incidentsCtrl.createIncident);
+    //apiRouter.route('/incidents/new/').post(incidentsCtrl.createIncident);
+    //apiRouter.route('/test').post(incidentsCtrl.createIncident);
     apiRouter.route('/incidents/').get(incidentsCtrl.listIncident);
     apiRouter.route('/incidents/search/').get(incidentsCtrl.searchIncident);
     apiRouter.route('/incidents/detail/').get(incidentsCtrl.getIncident);
     //apiRouter.route('/incidents/addUsers/').put(incidentsCtrl.addAllowedUser);
     apiRouter.route('/incidents/update/').put(incidentsCtrl.updateIncident);
-    apiRouter.route('/incidents/update/state/').put(incidentsCtrl.updateIncidentEtat);
+    //apiRouter.route('/incidents/updateState/').put(incidentsCtrl.updateIncidentEtat);
     apiRouter.route('/incidents/delete/').delete(incidentsCtrl.deleteIncident);
     
 
     /////////////typeIncidents routes/////////////
     apiRouter.route('/typeIncidents/').get(typeIncidentsCtrl.listTypeIncident);
-    apiRouter.route('/typeIncidents/new/').post(typeIncidentsCtrl.createTypeIncident);
+    //apiRouter.route('/typeIncidents/new/').post(typeIncidentsCtrl.createTypeIncident);
     apiRouter.route('/typeIncidents/delete/').delete(typeIncidentsCtrl.deleteTypeIncident);
-    apiRouter.route('/typeIncidents/detail/').get(typeIncidentsCtrl.listTypeIncident);
+    apiRouter.route('/typeIncidents/detail/').get(typeIncidentsCtrl.getTypeIncident);
     apiRouter.route('/typeIncidents/search/').get(typeIncidentsCtrl.searchTypeIncident);
     
 

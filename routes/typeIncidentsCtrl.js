@@ -103,18 +103,18 @@ module.exports = {
           limit: (!isNaN(limit)) ? limit : null,
           offset: (!isNaN(offset)) ? offset : null,
           //Recherche dans la BD...
-          attributes: ['nom','image', 'description'],
+          //attributes: ['nom', 'description'],
           //where: { userType: 'Dev' }
         })
-        .then(function(users) {
-          if (users) {
-            res.status(200).json(users);
+        .then(function(typeIncidents) {
+          if (typeIncidents) {
+            res.status(200).json(typeIncidents);
           } else {
-            res.status(404).json({ "error": "no users found" });
+            res.status(404).json({ "error": "no typeIncidents found" });
           }
         })
         .catch(function(err) {
-          return res.status(500).json({ 'error': 'unable to verify user'});
+          return res.status(500).json({ 'error': 'unable to verify typeIncident'});
         });
       
     },
@@ -136,7 +136,7 @@ module.exports = {
       };
                           
       models.TypeIncident.findAll({
-        attributes: ['nom','image', 'description'],
+        attributes: ['id', 'nom','image', 'description'],
           where: whereCondition
       }).then(function(typeIncidents) {
           if (typeIncidents) {
@@ -154,22 +154,22 @@ module.exports = {
       //var userId     = jwtUtils.getUserId(headerAuth);
       //var token      = jwtUtils.parseAuthorization(headerAuth);
       var id      = req.query.id;
-      console.log(userId);
+      console.log(id);
       //console.log(token);
 
       //if (userId < 0 ) return res.status(400).json({ 'error': 'wrong token' });
 
       models.TypeIncident.findOne({
-          attributes: ['nom', 'image','description'],
+          attributes: ['id', 'nom', 'image','description'],
           where: { id: id }
-      }).then(function(user) {
-          if (user) {
-              res.status(201).json(user);
+      }).then(function(typeIncident) {
+          if (typeIncident) {
+              res.status(201).json(typeIncident);
           } else {
-              res.status(500).json({ 'error': 'user not found'});
+              res.status(500).json({ 'error': 'typeIncident not found'});
           }
       }).catch(function(err) {
-          res.status(500).json({ 'error': 'cannot fetch user'});
+          res.status(500).json({ 'error': 'cannot fetch typeIncident'});
       });
     },
     deleteTypeIncident: function(req, res) {

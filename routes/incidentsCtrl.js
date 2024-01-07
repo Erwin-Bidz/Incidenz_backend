@@ -7,6 +7,7 @@ var jwtUtilsEntreprise = require('../utils/jwt.utils.entreprise');
 
 module.exports ={
     createIncident: function (req, res) {
+      console.log('fbfbff');
       var headerAuth = req.headers['authorization'];
       var userId     = jwtUtils.getUserId(headerAuth);
       var isBlocked     = jwtUtils.getIsBlocked(headerAuth);
@@ -37,7 +38,6 @@ module.exports ={
                 })
                 .then(function(userFound) {
                     done(null, userFound);
-                    console.log("id du current user :"+ id)
                 })
             } else {
                 done(null, null);
@@ -172,9 +172,34 @@ module.exports ={
       
     },
     searchIncident: function(req, res) {
-      
+      const { Op } = require("sequelize");
 
-      
+      //var headerAuth = req.headers['authorization'];
+      //var UserId = jwtUtils.getUserId(headerAuth);
+      var title = req.query.title;
+
+      //Le user courant
+      //const user       = models.User.findByPk(UserId);
+  
+      // Ecrire la condition de recherche
+      var whereCondition = {
+        title: {
+          [Op.like]: '%' + title + '%'
+        }
+      };
+                          
+      models.Incident.findAll({
+          //attributes: ['id', 'nom','image', 'description'],
+          where: whereCondition
+      }).then(function(incidents) {
+          if (incidents) {
+              res.status(200).json(incidents);
+          } else {
+              res.status(404).json({ "error": "no type of incidents found" });
+          }
+      }).catch(function(err) {
+          return res.status(500).json({ 'error': 'unable to verify type of incident'});
+      });
     },
     updateIncident: function(req, res) {
       // Getting auth header
@@ -379,7 +404,7 @@ module.exports ={
       //var userId     = jwtUtils.getUserId(headerAuth);
       //var token      = jwtUtils.parseAuthorization(headerAuth);
       var id      = req.query.id;
-      console.log(userId);
+      //console.log(userId);
       //console.log(token);
 
       //if (userId < 0 ) return res.status(400).json({ 'error': 'wrong token' });
@@ -402,7 +427,7 @@ module.exports ={
       // Getting auth header
       var headerAuth = req.headers['authorization'];
       //var isAdmin     = jwtUtils.getIsAdmin(headerAuth);
-      console.log(isAdmin);
+     
       //var UserId   = jwtUtils.getUserId(headerAuth); //id du user courant
       //var UserType   = jwtUtils.getUserType(headerAuth); //userType du user courant
       
@@ -415,7 +440,7 @@ module.exports ={
       } 
       else {
             models.Incident.findOne({ 
-              attributes: ['etat'],
+              //attributes: ['etat'],
               where: { id: id } 
             })
             .then(function(userFound) {
@@ -428,7 +453,7 @@ module.exports ={
                       } 
                     }
                 ).then(function() {
-                  models.Incident.findByPk(incidentId).then(function(newIncident) {
+                  models.Incident.findByPk(id).then(function(newIncident) {
                     return res.status(201).json(newIncident);
                   });
                 });
@@ -441,6 +466,6 @@ module.exports ={
           }
           );
         }
-      },
+    },
 
 }
