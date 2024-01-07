@@ -33,7 +33,7 @@ exports.router = (function() {
 
 
     /////////////Incidents routes/////////////////// 
-    //apiRouter.route('/incidents/new/').post(incidentsCtrl.createIncident);
+    apiRouter.route('/incidents/new/').post(incidentsCtrl.createIncident);
     //apiRouter.route('/test').post(incidentsCtrl.createIncident);
     apiRouter.route('/incidents/').get(incidentsCtrl.listIncident);
     apiRouter.route('/incidents/search/').get(incidentsCtrl.searchIncident);

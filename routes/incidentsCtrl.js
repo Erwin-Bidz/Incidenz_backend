@@ -7,10 +7,11 @@ var jwtUtilsEntreprise = require('../utils/jwt.utils.entreprise');
 
 module.exports ={
     createIncident: function (req, res) {
-      console.log('fbfbff');
+      console.log('fonction createIncident');
       var headerAuth = req.headers['authorization'];
       var userId     = jwtUtils.getUserId(headerAuth);
       var isBlocked     = jwtUtils.getIsBlocked(headerAuth);
+      console.log('userId:' ,userId);
 
       // Params
       var title       = req.body.title;
@@ -41,6 +42,7 @@ module.exports ={
                 })
             } else {
                 done(null, null);
+                console.log('Pas du user courant');
             }
         },
         function(userFound, done) {
