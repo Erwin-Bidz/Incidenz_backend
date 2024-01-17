@@ -152,6 +152,7 @@ module.exports = {
           }
         });
     },
+<<<<<<< HEAD
     logout: function(req, res) {
       // Getting auth header
       var headerAuth = req.headers['authorization'];
@@ -164,6 +165,8 @@ module.exports = {
       return res.status(200).json({ 'message': 'user logged out successfully' });
       
     },
+=======
+>>>>>>> 8ea9b896161adb4b6839a2405cca91a142013468
     getUserProfile: function(req, res) {
         // Getting auth header
         var headerAuth = req.headers['authorization'];

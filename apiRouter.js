@@ -14,7 +14,10 @@ exports.router = (function() {
     ///////////////Administrators routes/////////////////////
     apiRouter.route('/admins/register/').post(adminsCtrl.register);
     apiRouter.route('/admins/login/').post(adminsCtrl.login);
+<<<<<<< HEAD
     apiRouter.route('/admins/logout/').post(adminsCtrl.logout);
+=======
+>>>>>>> 8ea9b896161adb4b6839a2405cca91a142013468
     apiRouter.route('/admins/login/me/').get(adminsCtrl.getAdminProfile);
     apiRouter.route('/admins/login/me/changePwd/').put(adminsCtrl.changePassword);
     //apiRouter.route('/admins/typeIncident/new/').post(adminsCtrl.createTypeIncident);
@@ -24,7 +27,10 @@ exports.router = (function() {
     ///////////////Users routes/////////////////////
     apiRouter.route('/users/register/').post(usersCtrl.register);
     apiRouter.route('/users/login/').post(usersCtrl.login);
+<<<<<<< HEAD
     apiRouter.route('/users/logout/').post(usersCtrl.logout);
+=======
+>>>>>>> 8ea9b896161adb4b6839a2405cca91a142013468
     apiRouter.route('/users/login/me/').get(usersCtrl.getUserProfile);
     apiRouter.route('/users/login/me/changePwd/').put(usersCtrl.changePassword);
     apiRouter.route('/users/login/user/').get(usersCtrl.getUser);
@@ -56,7 +62,10 @@ exports.router = (function() {
 
     /////////////entreprises routes///////////////
     apiRouter.route('/entreprises/login/').post(entreprisesCtrl.login);
+<<<<<<< HEAD
     apiRouter.route('/entreprises/logout/').post(entreprisesCtrl.logout);
+=======
+>>>>>>> 8ea9b896161adb4b6839a2405cca91a142013468
     apiRouter.route('/entreprises/register/').post(entreprisesCtrl.createEntreprise);
     apiRouter.route('/entreprises/list/').get(entreprisesCtrl.listEntreprise);
     apiRouter.route('/entreprises/detail/').get(entreprisesCtrl.getEntreprise);

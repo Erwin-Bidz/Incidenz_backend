@@ -9,6 +9,7 @@ module.exports ={
     createIncident: function (req, res) {
       console.log('fonction createIncident');
       var headerAuth = req.headers['authorization'];
+<<<<<<< HEAD
       var userId = jwtUtils.getUserId(headerAuth);
       var isBlocked = jwtUtils.getIsBlocked(headerAuth);
       console.log('userId:', userId);
@@ -74,6 +75,70 @@ module.exports ={
               return res.status(500).json({ 'error': 'cannot post Incident' });
           }
       });
+=======
+      var userId     = jwtUtils.getUserId(headerAuth);
+      var isBlocked     = jwtUtils.getIsBlocked(headerAuth);
+      console.log('userId:' ,userId);
+
+      // Params
+      var title       = req.body.title;
+      var type        = req.body.type;
+      var media       = req.body.media;
+      var audio       = req.body.audio;
+      var gravite     = req.body.gravite;
+      var description = req.body.description;
+      var localisation= req.body.localisation;
+      //var etat        = req.body.etat;
+
+      if (!title || !description) {
+          return res.status(400).json({ 'error': 'missing parameters'});
+      }
+
+      if (gravite != 1  && gravite != 2 && gravite != 3 && gravite != 4 && gravite != 5) {
+          return res.status(400).json({ 'error': 'invalid level of disturb'});
+      }
+
+    asyncLib.waterfall([
+        function(done) {
+            if(userId) {
+                models.User.findOne({
+                    where: { id: userId }
+                })
+                .then(function(userFound) {
+                    done(null, userFound);
+                })
+            } else {
+                done(null, null);
+                console.log('Pas du user courant');
+            }
+        },
+        function(userFound, done) {
+            if(userFound && isBlocked == 0) {
+                models.Incident.create({
+                    title      : title,                   
+                    tel        : userId,
+                    type       : type,
+                    media      : media,
+                    audio      : audio,
+                    gravite    : gravite,
+                    description: description,
+                    localisation   : localisation,
+                    etat        : 'created',
+                })
+                .then(function(newIncident) {
+                    done(newIncident);
+                    console.table(newIncident)
+                });
+            }
+        },
+    ],  function(newIncident) {
+        if (newIncident) {
+            return res.status(201).json(newIncident);
+        } else {
+            return res.status(500).json({ 'error': 'cannot post Incident' });
+        }
+    });
+>>>>>>> 8ea9b896161adb4b6839a2405cca91a142013468
     },
     listIncident: function(req, res) {
       console.log(req)
@@ -121,6 +186,7 @@ module.exports ={
           //L'utilisateur est une entreprise'
 
           //On récupère l'entreprise à partir du type de l'incident
+<<<<<<< HEAD
           typeIncident.id = models.TypeIncident.findOne({
             attributes: ['id'],
             where: { Entreprise: EntrepriseId  } 
@@ -132,6 +198,11 @@ module.exports ={
           })
 
 
+=======
+          typeIncident = models.TypeIncident.findOne({
+            attributes: ['entreprise'],
+            where: { type: type  } })
+>>>>>>> 8ea9b896161adb4b6839a2405cca91a142013468
 
           models.Incident.findAll({
             order: [(order != null) ? order.split(':') : ['title', 'ASC']],
@@ -140,7 +211,11 @@ module.exports ={
             offset: (!isNaN(offset)) ? offset : null,
             //Recherche dans la BD.
             //attributes: ['id', 'title', 'solution', 'description', 'state', 'userId', 'file', 'allowedUsers'],
+<<<<<<< HEAD
             where: { type: typeIncident.id  }
+=======
+            where: { type: UserId  }
+>>>>>>> 8ea9b896161adb4b6839a2405cca91a142013468
           })
           .then(function(incidents) {
             if (incidents) {
@@ -184,6 +259,7 @@ module.exports ={
 
       
     },
+<<<<<<< HEAD
     listIncidentByUser: function(req, res) {
       console.log(req)
       // Getting auth header
@@ -271,6 +347,8 @@ module.exports ={
 
       
     },
+=======
+>>>>>>> 8ea9b896161adb4b6839a2405cca91a142013468
     searchIncident: function(req, res) {
       const { Op } = require("sequelize");
 
