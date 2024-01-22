@@ -50,7 +50,7 @@ exports.router = (function() {
 
     /////////////typeIncidents routes/////////////
     apiRouter.route('/typeIncidents/').get(typeIncidentsCtrl.listTypeIncident);
-    //apiRouter.route('/typeIncidents/new/').post(typeIncidentsCtrl.createTypeIncident);
+    apiRouter.route('/typeIncidents/new/').post(typeIncidentsCtrl.createTypeIncident);
     apiRouter.route('/typeIncidents/delete/').delete(typeIncidentsCtrl.deleteTypeIncident);
     apiRouter.route('/typeIncidents/detail/').get(typeIncidentsCtrl.getTypeIncident);
     apiRouter.route('/typeIncidents/search/').get(typeIncidentsCtrl.searchTypeIncident);

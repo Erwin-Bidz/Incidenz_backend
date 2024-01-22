@@ -82,11 +82,8 @@ module.exports ={
       console.log(req)
       // Getting auth header
       var headerAuth = req.headers['authorization'];
-      var AdminId    = jwtUtilsAdmin.getAdminId(headerAuth);
-      console.log(AdminId);
       var UserId     = jwtUtils.getUserId(headerAuth);
       console.log(UserId);
-      var EntrepriseId     = jwtUtilsEntreprise.getEntrepriseId(headerAuth);
           
 
       // Body Query Parameters
@@ -124,11 +121,8 @@ module.exports ={
       console.log(req)
       // Getting auth header
       var headerAuth = req.headers['authorization'];
-      var AdminId    = jwtUtilsAdmin.getAdminId(headerAuth);
-      console.log(AdminId);
-      var UserId     = jwtUtils.getUserId(headerAuth);
-      console.log(UserId);
       var EntrepriseId     = jwtUtilsEntreprise.getEntrepriseId(headerAuth);
+      console.log(EntrepriseId);
           
 
       // Body Query Parameters
@@ -137,7 +131,7 @@ module.exports ={
       var offset = parseInt(req.query.offset);
       var order  = req.query.order;
 
-      if (!UserId && EntrepriseId) {
+      if (EntrepriseId) {
         //L'utilisateur est une entreprise'
 
         //On récupère l'entreprise à partir du type de l'incident
@@ -191,9 +185,6 @@ module.exports ={
       var headerAuth = req.headers['authorization'];
       var AdminId    = jwtUtilsAdmin.getAdminId(headerAuth);
       console.log(AdminId);
-      var UserId     = jwtUtils.getUserId(headerAuth);
-      console.log(UserId);
-      var EntrepriseId     = jwtUtilsEntreprise.getEntrepriseId(headerAuth);
           
 
       // Body Query Parameters
@@ -202,7 +193,7 @@ module.exports ={
       var offset = parseInt(req.query.offset);
       var order  = req.query.order;
 
-      if (!UserId && !EntrepriseId && AdminId) {
+      if (AdminId) {
         //Le user est un Administrateur
         
         models.Incident.findAll({
@@ -225,94 +216,6 @@ module.exports ={
           return res.status(500).json({ 'error': 'unable to verify user'});
         });
       }
-      
-    },
-
-    listIncidentByUser: function(req, res) {
-      console.log(req)
-      // Getting auth header
-      var headerAuth = req.headers['authorization'];
-      var UserId     = jwtUtils.getUserId(headerAuth);
-      console.log(UserId);
-          
-
-      // Body Query Parameters
-      var fields = req.query.fields;
-      var limit  = parseInt(req.query.limit);
-      var offset = parseInt(req.query.offset);
-      var order  = req.query.order;
-             
-          if (AdminId) {
-            //Le user est un Administrateur
-            
-            models.Incident.findAll({
-              order: [(order != null) ? order.split(':') : ['title', 'ASC']],
-              attributes: (fields !== '*' && fields != null) ? fields.split(',') : null,
-              limit: (!isNaN(limit)) ? limit : null,
-              offset: (!isNaN(offset)) ? offset : null,
-              //Recherche dans la BD.
-              //attributes: ['id', 'title', 'solution', 'description', 'userId', 'file', 'userId'],
-              where: { tel: UserId } 
-            })
-            .then(function(incidents) {
-              if (incidents) {
-                res.status(200).json(incidents);
-              } else {
-                res.status(404).json({ "error": "no incidents found" });
-              }
-            })
-            .catch(function(err) {
-              return res.status(500).json({ 'error': 'unable to verify user'});
-            });
-          }
-          else {
-            res.status(403).json({ "error": "no users connected" });
-          }
-        
-      
-
-      
-    },
-    listIncidentByEntreprise: function(req, res) {
-      console.log(req)
-      // Getting auth header
-      var headerAuth = req.headers['authorization'];
-      var EntrepriseId     = jwtUtilsEntreprise.getEntrepriseId(headerAuth);
-      console.log(EntrepriseId);
-          
-
-      // Body Query Parameters
-      var fields = req.query.fields;
-      var limit  = parseInt(req.query.limit);
-      var offset = parseInt(req.query.offset);
-      var order  = req.query.order;
-             
-          if (EntrepriseId) {
-            //Le user est une Entreprise
-            
-            models.Incident.findAll({
-              order: [(order != null) ? order.split(':') : ['title', 'ASC']],
-              attributes: (fields !== '*' && fields != null) ? fields.split(',') : null,
-              limit: (!isNaN(limit)) ? limit : null,
-              offset: (!isNaN(offset)) ? offset : null,
-              //Recherche dans la BD.
-              //attributes: ['id', 'title', 'solution', 'description', 'userId', 'file', 'userId'],
-              //where: { userId: allowedUsers } 
-            })
-            .then(function(incidents) {
-              if (incidents) {
-                res.status(200).json(incidents);
-              } else {
-                res.status(404).json({ "error": "no incidents found" });
-              }
-            })
-            .catch(function(err) {
-              return res.status(500).json({ 'error': 'unable to verify user'});
-            });
-          }
-        
-      
-
       
     },
 
