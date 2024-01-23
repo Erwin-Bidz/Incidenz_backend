@@ -22,7 +22,7 @@ module.exports = {
         }
       },
       image: {
-        type: Sequelize.BLOB
+        type: Sequelize.STRING //BLOB
       },
       description: {
         type: Sequelize.STRING
