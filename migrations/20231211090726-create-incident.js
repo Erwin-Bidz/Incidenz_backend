@@ -29,7 +29,7 @@ module.exports = {
         }
       },
       media: {
-        type: Sequelize.STRING //BLOB
+        type: Sequelize.BLOB('long')
       },
       audio: {
         type: Sequelize.BLOB

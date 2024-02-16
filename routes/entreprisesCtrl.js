@@ -74,9 +74,10 @@ module.exports = {
         var nom        = req.body.nom;
         var password = req.body.password;
         var contact = req.body.contact;
+        var email = req.body.email;
 
         //TODO verify pseudo length, mail regex, password...
-        if (nom == null || password == null) {
+        if (nom == null || password == null || email == null ) {
             return res.status(400).json({ 'error': 'missing parameters' });
         }
 
@@ -113,6 +114,7 @@ module.exports = {
                     nom       : nom,
                     password  : bcryptedPassword,
                     contact   : contact,
+                    email     : email
                 })
                 .then(function(newEntreprise) {
                     done(newEntreprise);
@@ -127,6 +129,7 @@ module.exports = {
                     'entrepriseId': newEntreprise.id,
                     'entreprisename': newEntreprise.nom,
                     'entreprisecontact': newEntreprise.contact,
+                    'entrepriseEmail': newEntreprise.email,
                 })
             } else {
                 return res.status(500).json({ 'error': 'cannot add entreprise' });
